@@ -16,4 +16,8 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpenBrisk.Runtime.Shared\OpenBrisk.Runtime.Shared.csproj" />
+    <ProjectReference Include="..\OpenBrisk.Runtime.Core\OpenBrisk.Runtime.Core.csproj" />
+  </ItemGroup>
 </Project>

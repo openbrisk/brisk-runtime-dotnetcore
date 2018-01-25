@@ -1,12 +1,13 @@
-﻿namespace src.Controllers
+﻿namespace OpenBrisk.Runtime.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
+	using System.IO;
+	using System.Text;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Mvc;
+	using OpenBrisk.Runtime.Core.Interfaces;
+	using OpenBrisk.Runtime.Shared;
 
-    [Route("/")]
+	[Route("/")]
     public class FunctionController : Controller
     {
         private readonly IFunction function;
@@ -28,7 +29,7 @@
             }
 
             // TODO: Create custom context (dynamic?) from Request.
-            object result = await this.invoker.Execute(this.function, new BriskContext(data)));
+            object result = await this.invoker.Execute(this.function, new BriskContext(data));
 
             return this.GetSuitableActionResult(result);
         }
@@ -36,7 +37,7 @@
         [HttpGet]
         public async Task<IActionResult> Get() 
         {
-            object result = await this.invoker.Execute(this.function, new BriskContext(data));
+            object result = await this.invoker.Execute(this.function, new BriskContext());
             return this.GetSuitableActionResult(result);
         }
 

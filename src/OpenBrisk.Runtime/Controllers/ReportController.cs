@@ -1,6 +1,5 @@
-namespace OpenBrisk.RuntimeControllers
+/* namespace OpenBrisk.RuntimeControllers
 {
-    using OpenBrisk.Runtime.Services;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("/report")]
@@ -19,4 +18,4 @@ namespace OpenBrisk.RuntimeControllers
             return this.reportBuilder.GetReport();
         }
     }
-}
+} */
