@@ -1,13 +1,16 @@
 ﻿namespace OpenBrisk.Runtime.Controllers
 {
-	using System.IO;
+    using System.Dynamic;
+    using System.IO;
 	using System.Text;
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
-	using OpenBrisk.Runtime.Core.Interfaces;
-	using OpenBrisk.Runtime.Shared;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using OpenBrisk.Runtime.Core.Interfaces;
+    using OpenBrisk.Runtime.Core.Models;
 
-	[Route("/")]
+    [Route("/")]
     public class FunctionController : Controller
     {
         private readonly IFunction function;
@@ -22,22 +25,37 @@
         [HttpPost]
         public async Task<IActionResult> Post()
         {
-            string data;
-            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
-            {  
-                data = await reader.ReadToEndAsync();
+            // string data;
+            // using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            // {  
+            //     data = await reader.ReadToEndAsync();
+            // }
+
+            using (StreamReader streamReader = new StreamReader(this.Request.Body, Encoding.UTF8))
+            using (JsonReader reader = new JsonTextReader(streamReader))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                BriskContext context = new BriskContext
+                {
+                    Data = serializer.Deserialize(reader),
+                };
+
+                object result = await this.invoker.Execute(this.function, context);
+
+                return this.GetSuitableActionResult(result);
             }
-
-            // TODO: Create custom context (dynamic?) from Request.
-            object result = await this.invoker.Execute(this.function, new BriskContext(data));
-
-            return this.GetSuitableActionResult(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> Get() 
         {
-            object result = await this.invoker.Execute(this.function, new BriskContext());
+            BriskContext context = new BriskContext
+            {
+                Data = new {}
+            };
+
+            object result = await this.invoker.Execute(this.function, context);
             return this.GetSuitableActionResult(result);
         }
 

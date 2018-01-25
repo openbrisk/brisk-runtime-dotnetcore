@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenBrisk.Runtime.Shared\OpenBrisk.Runtime.Shared.csproj" />
     <ProjectReference Include="..\OpenBrisk.Runtime.Core\OpenBrisk.Runtime.Core.csproj" />
   </ItemGroup>
 </Project>

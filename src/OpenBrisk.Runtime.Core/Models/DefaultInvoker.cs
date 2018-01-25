@@ -5,7 +5,6 @@
 	using System.Linq;
 	using System.Reflection;
 	using System.Threading.Tasks;
-	using OpenBrisk.Runtime.Shared;
 
 	public class DefaultInvoker : IInvoker
     {
@@ -18,7 +17,7 @@
             this.requirementsPath = requirementsPath;
         }
 
-        public async Task<object> Execute(IFunction function, IBriskContext context)
+        public async Task<object> Execute(IFunction function, object context)
         {
             object result = this.ExecuteFunction(function, context);
             if(result is Task) 
@@ -31,7 +30,7 @@
             }
         }
 
-        private object ExecuteFunction(IFunction function, IBriskContext context)
+        private object ExecuteFunction(IFunction function, object context)
         {
             // Create invokation data if none exists. This caches assembly and type loading.
             if(this.invokationData == null) 
