@@ -4,6 +4,6 @@
 
 	public interface IInvoker
     {
-        Task<object> Execute(IFunction function, object context);
+        Task<object> Execute(IFunction function, object context = null);
     }
 }

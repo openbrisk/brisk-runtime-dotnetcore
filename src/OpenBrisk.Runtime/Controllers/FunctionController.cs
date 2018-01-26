@@ -1,16 +1,14 @@
 ﻿namespace OpenBrisk.Runtime.Controllers
 {
-    using System.Dynamic;
-    using System.IO;
+	using System.IO;
 	using System.Text;
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using OpenBrisk.Runtime.Core.Interfaces;
-    using OpenBrisk.Runtime.Core.Models;
+	using Newtonsoft.Json;
+	using OpenBrisk.Runtime.Core.Interfaces;
+	using OpenBrisk.Runtime.Core.Models;
 
-    [Route("/")]
+	[Route("/")]
     public class FunctionController : Controller
     {
         private readonly IFunction function;
@@ -52,10 +50,9 @@
         {
             BriskContext context = new BriskContext
             {
-                Data = new {}
             };
 
-            object result = await this.invoker.Execute(this.function, context);
+            object result = await this.invoker.Execute(this.function);
             return this.GetSuitableActionResult(result);
         }
 

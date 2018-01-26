@@ -17,7 +17,7 @@
             this.requirementsPath = requirementsPath;
         }
 
-        public async Task<object> Execute(IFunction function, object context)
+        public async Task<object> Execute(IFunction function, object context = null)
         {
             object result = this.ExecuteFunction(function, context);
             if(result is Task) 
