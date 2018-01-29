@@ -11,7 +11,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image.
-# HACK: Need to use aspnetcore-build for now, just to test out 'dotnet restore'.
+# HACK: Need to use aspnetcore-build for now, to be able to use 'dotnet restore'.
 FROM microsoft/aspnetcore-build:2.0
 WORKDIR /app
 COPY --from=build-env /app/src/OpenBrisk.Runtime/out ./
