@@ -1,7 +1,10 @@
-.PHONY: build
+.PHONY: build test bash run
 
 build:
 	docker build . -t=openbrisk-runtime-dotnetcore
+
+test:
+	dotnet run --project ./src/OpenBrisk.Runtime/OpenBrisk.Runtime.csproj
 
 bash:
 	docker run -it \
