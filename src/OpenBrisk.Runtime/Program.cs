@@ -13,12 +13,9 @@
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            string envPortStr = Environment.GetEnvironmentVariable("FUNCTION_PORT");
-            string port = string.IsNullOrWhiteSpace(envPortStr) ? "8080" : envPortStr;
-
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls($"http://+:{port}")
+                .UseUrls($"http://+:8080")
                 .Build();
         }
     }

@@ -34,7 +34,6 @@
 			services.AddSingleton<IFunction>(function);
 			services.AddSingleton<IFunctionSettings>(serviceProvider => serviceProvider.GetService<IFunction>().FunctionSettings);
 			services.AddSingleton<IInvoker>(new DefaultInvoker(requirementsPath));
-			//services.AddSingleton<IReportBuilder, ReportBuilder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
