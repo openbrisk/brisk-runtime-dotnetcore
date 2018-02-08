@@ -1,0 +1,15 @@
+{
+	"profiles": {
+		"OpenBrisk.Runtime": {
+			"commandName": "Project",
+			"launchBrowser": false,
+			"launchUrl": "api/values",
+			"environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "MODULE_NAME": "HelloWorld",
+                "FUNCTION_HANDLER": "Execute"
+			},
+			"applicationUrl": "http://localhost:8080/"
+		}
+	}
+}
