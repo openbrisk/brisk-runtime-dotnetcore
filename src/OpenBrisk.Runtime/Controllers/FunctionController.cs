@@ -2,6 +2,7 @@
 namespace OpenBrisk.Runtime.Controllers
 {
 	using System.IO;
+	using System.Reflection;
 	using System.Text;
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace OpenBrisk.Runtime.Controllers
 	using OpenBrisk.Runtime.Core.Interfaces;
 	using OpenBrisk.Runtime.Core.Models;
 
-	[Route("runtime/v1")]
+	[Route("/")]
 	public class FunctionController : Controller
 	{
 		private readonly IFunction function;
@@ -58,11 +59,23 @@ namespace OpenBrisk.Runtime.Controllers
 			return this.GetSuitableActionResult(result);
 		}
 
-		private IActionResult GetSuitableActionResult(object result)
+		private IActionResult GetSuitableActionResult(dynamic result)
 		{
+			object responseResult = result;
+
+			PropertyInfo property = result.GetType().GetProperty("forward");
+			bool forwardResult = property != null;
+
+			if(forwardResult) 
+			{
+				responseResult = result.result;
+				dynamic forward = result.forward;
+				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{forward.to}");
+			}
+
 			if (result is string)
 			{
-				return this.Ok(result);
+				return this.Ok(responseResult);
 			}
 
 			if (result == null)
@@ -70,7 +83,7 @@ namespace OpenBrisk.Runtime.Controllers
 				return this.Ok();
 			}
 
-			return this.Json(result);
+			return this.Json(responseResult);
 		}
 	}
 }

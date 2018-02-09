@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-
-namespace OpenBrisk.Runtime.Controllers
+﻿namespace OpenBrisk.Runtime.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	
 	[Route("/")]
 	public class HealthController : Controller
 	{
