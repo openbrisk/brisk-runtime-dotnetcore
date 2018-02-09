@@ -8,20 +8,20 @@
 	using OpenBrisk.Runtime.Core.Models;
 
 	public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            this.Configuration = configuration;
-        }
+	{
+		public Startup(IConfiguration configuration)
+		{
+			this.Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddMvc();
 
-            // Compile the function.
+			// Compile the function.
 			string requirementsPath = this.Configuration["Compiler:RequirementsPath"];
 			IFunction function = FunctionFactory.BuildFunction(this.Configuration);
 			ICompiler compiler = new DefaultCompiler(new DefaultParser(), new DefaultReferencesManager(function.FunctionSettings));
@@ -34,17 +34,17 @@
 			services.AddSingleton<IFunction>(function);
 			services.AddSingleton<IFunctionSettings>(serviceProvider => serviceProvider.GetService<IFunction>().FunctionSettings);
 			services.AddSingleton<IInvoker>(new DefaultInvoker(requirementsPath));
-        }
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseMvc();
-        }
-    }
+			app.UseMvc();
+		}
+	}
 }
