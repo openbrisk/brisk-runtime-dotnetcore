@@ -25,12 +25,6 @@ namespace OpenBrisk.Runtime.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Post()
 		{
-			// string data;
-			// using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
-			// {  
-			//     data = await reader.ReadToEndAsync();
-			// }
-
 			using (StreamReader streamReader = new StreamReader(this.Request.Body, Encoding.UTF8))
 			using (JsonReader reader = new JsonTextReader(streamReader))
 			{
@@ -63,14 +57,15 @@ namespace OpenBrisk.Runtime.Controllers
 		{
 			object responseResult = result;
 
-			PropertyInfo property = result.GetType().GetProperty("forward");
+			PropertyInfo property = result.GetType().GetProperty("Forward");
 			bool forwardResult = property != null;
 
-			if(forwardResult) 
+			// The result contains a forward target.
+			if (forwardResult)
 			{
-				responseResult = result.result;
-				dynamic forward = result.forward;
-				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{forward.to}");
+				responseResult = result.Result;
+				dynamic forward = result.Forward;
+				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{forward.To}");
 			}
 
 			if (result is string)

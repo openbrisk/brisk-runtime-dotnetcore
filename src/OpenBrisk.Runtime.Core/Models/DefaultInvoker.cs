@@ -11,7 +11,7 @@
 	{
 		private readonly string requirementsPath;
 
-		private InvocationData invokationData;
+		private InvocationData invocationData;
 
 		public DefaultInvoker(string requirementsPath)
 		{
@@ -34,18 +34,18 @@
 
 		private object ExecuteFunction(IFunction function, object context)
 		{
-			// Create invokation data if none exists. This caches assembly and type loading.
-			if (this.invokationData == null)
+			// Create invocation data if none exists. This caches assembly and type loading.
+			if (this.invocationData == null)
 			{
-				this.invokationData = this.CreateInvokationData(function);
+				this.invocationData = this.CreateInvocationData(function);
 			}
 
 			// TODO: Custom context class to be able to remove the dependency on Microsoft.AspNetCore.Http.
-			object returnedValue = this.invokationData.MethodInvoker.Invoke(context);
+			object returnedValue = this.invocationData.MethodInvoker.Invoke(context);
 			return returnedValue;
 		}
 
-		private InvocationData CreateInvokationData(IFunction function)
+		private InvocationData CreateInvocationData(IFunction function)
 		{
 			// Load the function assembly.
 			Assembly assembly = Assembly.Load(function.FunctionSettings.Assembly.Content);

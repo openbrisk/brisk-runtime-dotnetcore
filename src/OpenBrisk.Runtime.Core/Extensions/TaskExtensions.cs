@@ -14,7 +14,7 @@ namespace OpenBrisk.Runtime.Core.Extensions
 				if (completedTask == task)
 				{
 					cts.Cancel();
-					return await (dynamic)task; // Very important in order to propagate exceptions.
+					return await (dynamic)task; // Very important to await here in order to propagate exceptions.
 				}
 				else
 				{
