@@ -1,5 +1,5 @@
 # Image usage only for build process.
-FROM microsoft/aspnetcore-build:2.0 AS build-env
+FROM microsoft/aspnetcore-build:2.0 AS builder
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers.
@@ -14,8 +14,8 @@ RUN dotnet publish -c Release -o out
 # HACK: Need to use aspnetcore-build for now, to be able to use 'dotnet restore'.
 FROM microsoft/aspnetcore-build:2.0
 WORKDIR /app
-COPY --from=build-env /app/src/OpenBrisk.Runtime/out ./
-COPY --from=build-env /app/startup.sh ./
+COPY --from=builder /app/src/OpenBrisk.Runtime/out ./
+COPY --from=builder /app/startup.sh ./
 RUN chmod +x ./startup.sh
 
 # Run the web api application.
