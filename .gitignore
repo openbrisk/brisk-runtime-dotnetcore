@@ -292,3 +292,6 @@ __pycache__/
 
 # Artifacts
 *.dll
+
+out/
+packages/

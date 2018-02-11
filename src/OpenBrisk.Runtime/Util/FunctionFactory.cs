@@ -23,25 +23,14 @@ namespace OpenBrisk.Runtime
             string functionHandler = Environment.GetEnvironmentVariable("FUNCTION_HANDLER");
             Guard.AgainstEmpty(functionHandler, "FUNCTION_HANDLER");
 
-            string codePathSetting = configuration["Compiler:CodePath"];
-            Guard.AgainstEmpty(codePathSetting, "Compiler:CodePath");
-            string codePath = Path.Combine(codePathSetting, string.Concat(moduleName, ".cs")); 
-            StringContent code = new StringContent(codePath);
+            string functionPath = configuration["OpenBrisk:FunctionPath"];
+            Guard.AgainstEmpty(functionPath, "OpenBrisk:FunctionPath");
 
-            string requirementsPathSetting = configuration["Compiler:RequirementsPath"];
-            Guard.AgainstEmpty(requirementsPathSetting, "Compiler:RequirementsPath");
-            string requirementsPath = Path.Combine(requirementsPathSetting, string.Concat(moduleName, ".csproj"));
-            StringContent project = new StringContent(requirementsPath);
+            string assemblyPath = Path.Combine(functionPath, "out");       
+            string assemblyFilePath = Path.Combine(assemblyPath, string.Concat(moduleName, ".dll"));
+            BinaryContent assembly = new BinaryContent(assemblyFilePath);
 
-            string projectAssetsPath = Path.Combine(requirementsPathSetting, "obj", "project.assets.json");
-            StringContent projectAssets = new StringContent(projectAssetsPath);
-
-            string assemblyPathConfiguration = configuration["Compiler:FunctionAssemblyPath"];
-            Guard.AgainstEmpty(assemblyPathConfiguration, "Compiler:FunctionAssemblyPath");
-            string assemblyPath = Path.Combine(assemblyPathConfiguration, string.Concat(moduleName, ".dll"));
-            BinaryContent assembly = new BinaryContent(assemblyPath);
-
-            return new FunctionSettings(moduleName, functionHandler, code, project, projectAssets, assembly);
+            return new FunctionSettings(moduleName, functionHandler, assemblyPath, assembly);
         }
     }
 }

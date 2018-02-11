@@ -18,6 +18,4 @@ COPY --from=builder /app/src/OpenBrisk.Runtime/out ./
 COPY --from=builder /app/startup.sh ./
 RUN chmod +x ./startup.sh
 
-# Run the web api application.
-WORKDIR /app
 ENTRYPOINT ["./startup.sh"]

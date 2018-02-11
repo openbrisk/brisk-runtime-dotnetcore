@@ -4,13 +4,11 @@
     
     public sealed class FunctionSettings : IFunctionSettings
     {
-        public FunctionSettings(string moduleName, string functionHandler, IFileContent<string> code, IFileContent<string> project, IFileContent<string> projectAssets, IFileContent<byte[]> assembly)
+        public FunctionSettings(string moduleName, string functionHandler, string assemblyPath, IFileContent<byte[]> assembly)
         {
             this.ModuleName = moduleName;
             this.FunctionHandler = functionHandler;
-            this.Code = code;
-            this.Project = project;
-            this.ProjectAssets = projectAssets;
+            this.AssemblyPath = assemblyPath;
             this.Assembly = assembly;
         }
 
@@ -18,11 +16,7 @@
 
         public string FunctionHandler { get; private set; }
 
-        public IFileContent<string> Code { get; private set; }
-
-        public IFileContent<string> Project { get; private set; }
-
-        public IFileContent<string> ProjectAssets { get; private set; }
+        public string AssemblyPath { get; private set; }
         
         public IFileContent<byte[]> Assembly { get; private set; }
     }

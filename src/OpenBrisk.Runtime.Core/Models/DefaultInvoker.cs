@@ -6,17 +6,11 @@
 	using System.Reflection;
 	using System.Threading.Tasks;
 	using OpenBrisk.Runtime.Core.Extensions;
+    using System.IO;
 
-	public class DefaultInvoker : IInvoker
+    public class DefaultInvoker : IInvoker
 	{
-		private readonly string requirementsPath;
-
 		private InvocationData invocationData;
-
-		public DefaultInvoker(string requirementsPath)
-		{
-			this.requirementsPath = requirementsPath;
-		}
 
 		public async Task<object> Execute(IFunction function, object context = null)
 		{
@@ -24,7 +18,7 @@
 			if (result is Task)
 			{
 				Task task = result as Task;
-				return task.TimeoutAfter(TimeSpan.FromSeconds(10)); // TODO: Read timout from environment.
+				return await task.TimeoutAfter(TimeSpan.FromSeconds(10)); // TODO: Read timout from environment.
 			}
 			else
 			{
@@ -53,9 +47,12 @@
 			// Register handler for the assembly resolve event to load the required assemblies at runtime.
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
 			{
-				AssemblyName referenceAssembly = args.RequestingAssembly.GetReferencedAssemblies().FirstOrDefault(x => x.FullName == args.Name);
-				string dll = ReferenceAssemblyFinder.FindReferenceAssembly(referenceAssembly, function.FunctionSettings);
-				return Assembly.LoadFile(dll);
+				AssemblyName referenceAssembly = args.RequestingAssembly.GetReferencedAssemblies().FirstOrDefault(x => x.FullName == args.Name);	
+				string assemblyFileName = string.Concat(referenceAssembly.Name.Split(',').First().Trim().TrimEnd('.'), ".dll");	
+				string assemblyFilePath = Path.Combine(function.FunctionSettings.AssemblyPath, assemblyFileName);
+				
+				FileInfo assemblyFile = new FileInfo(assemblyFilePath);
+				return Assembly.LoadFile(assemblyFile.FullName);
 			};
 
 			// Get the functions class and create an instance of it.

@@ -6,11 +6,7 @@
 
         string FunctionHandler { get; }
 
-        IFileContent<string> Code { get; }
-
-        IFileContent<string> Project { get; }
-
-        IFileContent<string> ProjectAssets { get; }
+        string AssemblyPath { get; }
         
         IFileContent<byte[]> Assembly { get; }
     }

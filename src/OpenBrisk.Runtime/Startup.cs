@@ -22,18 +22,12 @@
 			services.AddMvc();
 
 			// Compile the function.
-			string requirementsPath = this.Configuration["Compiler:RequirementsPath"];
+			//string requirementsPath = this.Configuration["Compiler:RequirementsPath"];
 			IFunction function = FunctionFactory.BuildFunction(this.Configuration);
-			ICompiler compiler = new DefaultCompiler(new DefaultParser(), new DefaultReferencesManager(function.FunctionSettings));
-
-			if (!function.IsCompiled())
-			{
-				compiler.Compile(function);
-			}
 
 			services.AddSingleton<IFunction>(function);
 			services.AddSingleton<IFunctionSettings>(serviceProvider => serviceProvider.GetService<IFunction>().FunctionSettings);
-			services.AddSingleton<IInvoker>(new DefaultInvoker(requirementsPath));
+			services.AddSingleton<IInvoker>(new DefaultInvoker());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
