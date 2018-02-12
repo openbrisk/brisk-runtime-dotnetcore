@@ -9,4 +9,5 @@ fi
 # Build the function.
 dotnet publish -c Release -o /openbrisk/out /openbrisk/$MODULE_NAME.csproj
 
+# Run the server.
 dotnet OpenBrisk.Runtime.dll
