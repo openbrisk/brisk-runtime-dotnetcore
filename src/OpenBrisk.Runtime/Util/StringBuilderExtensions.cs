@@ -1,8 +1,8 @@
 namespace OpenBrisk.Runtime.Utils
 {
-	using System.Text;
+    using System.Text;
 
-	public static class StringBuilderExtensions
+    public static class StringBuilderExtensions
     {
         public static void AppendKeyValue(this StringBuilder builder, string key, string value)
         {
@@ -20,5 +20,5 @@ namespace OpenBrisk.Runtime.Utils
                 builder.AppendLine(code);
             }
         }
-    }
+    } 
 }

@@ -3,7 +3,7 @@
 build:
 	docker build . -t=openbrisk-runtime-dotnetcore
 
-test:
+start:
 	dotnet run --project ./src/OpenBrisk.Runtime/OpenBrisk.Runtime.csproj
 
 bash:
