@@ -1,12 +1,14 @@
 
 namespace OpenBrisk.Runtime.Controllers
 {
-	using System.IO;
+    using System;
+    using System.IO;
 	using System.Reflection;
 	using System.Text;
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
-	using Newtonsoft.Json;
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Newtonsoft.Json;
 	using OpenBrisk.Runtime.Core.Interfaces;
 	using OpenBrisk.Runtime.Core.Models;
 
@@ -35,6 +37,7 @@ namespace OpenBrisk.Runtime.Controllers
 					Data = serializer.Deserialize(reader),
 				};
 
+				// TODO: Check for 408 when timeout
 				object result = await this.invoker.Execute(this.function, context);
 
 				return this.GetSuitableActionResult(result);
@@ -49,6 +52,7 @@ namespace OpenBrisk.Runtime.Controllers
 				Data = new { }
 			};
 
+			// TODO: Check for 408 when timeout
 			object result = await this.invoker.Execute(this.function, context);
 			return this.GetSuitableActionResult(result);
 		}
@@ -57,15 +61,15 @@ namespace OpenBrisk.Runtime.Controllers
 		{
 			object responseResult = result;
 
-			PropertyInfo property = result.GetType().GetProperty("Forward");
+			PropertyInfo property = result.GetType().GetProperty("forward");
 			bool forwardResult = property != null;
 
 			// The result contains a forward target.
 			if (forwardResult)
 			{
-				responseResult = result.Result;
-				dynamic forward = result.Forward;
-				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{forward.To}");
+				responseResult = result.result;
+				dynamic forward = result.forward;
+				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{forward.to}");
 			}
 
 			if (result is string)
