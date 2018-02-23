@@ -4,6 +4,8 @@ build:
 	docker build . -t=openbrisk-runtime-dotnetcore
 
 start:
+	dotnet restore --packages ./examples/packages ./examples/Hasher.csproj
+	dotnet publish -c Release -o ./out ./examples/Hasher.csproj
 	dotnet run --project ./src/OpenBrisk.Runtime/OpenBrisk.Runtime.csproj
 
 bash:
