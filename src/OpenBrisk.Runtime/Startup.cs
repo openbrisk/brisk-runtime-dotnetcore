@@ -1,16 +1,13 @@
 ﻿namespace OpenBrisk.Runtime
 {
-    using System.Diagnostics;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Builder;
+	using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.DependencyInjection;
 	using OpenBrisk.Runtime.Core.Interfaces;
 	using OpenBrisk.Runtime.Core.Models;
-    using OpenBrisk.Runtime.Utils;
 
-    public class Startup
+	public class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{
@@ -40,22 +37,6 @@
 			{
 				app.UseDeveloperExceptionPage();
 			}
-
-			// Add request timing middleware.
-			app.Use(async (context, next) => 
-			{
-				Stopwatch stopwatch = new Stopwatch();
-
-				context.Response.OnStarting(() => 
-				{
-					stopwatch.Stop();
-					context.Response.Headers.Add("X-OpenBrisk-Duration", new string[] { stopwatch.ElapsedNanoSeconds().ToString() });
-					return Task.CompletedTask;
-				});
-
-				stopwatch.Start();
-				await next.Invoke();
-			});
 
 			app.UseMvc();
 		}
