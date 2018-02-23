@@ -23,6 +23,7 @@ namespace OpenBrisk.Runtime.Controllers
 		}
 
 		[HttpPost]
+		[RequestTimingFilter]
 		public async Task<IActionResult> Post()
 		{
 			using (StreamReader streamReader = new StreamReader(this.Request.Body, Encoding.UTF8))
@@ -42,6 +43,7 @@ namespace OpenBrisk.Runtime.Controllers
 		}
 
 		[HttpGet]
+		[RequestTimingFilter]
 		public async Task<IActionResult> Get()
 		{
 			BriskContext context = new BriskContext
@@ -57,15 +59,16 @@ namespace OpenBrisk.Runtime.Controllers
 		{
 			object responseResult = result;
 
-			PropertyInfo property = result.GetType().GetProperty("Forward");
-			bool forwardResult = property != null;
-
-			// The result contains a forward target.
-			if (forwardResult)
+			// The result contains a 'result' target.
+			if (result.GetType().GetProperty("result") != null)
 			{
-				responseResult = result.Result;
-				dynamic forward = result.Forward;
-				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{forward.To}");
+				responseResult = result.result;
+			}
+
+			// The result contains a 'forward' target.
+			if (result.GetType().GetProperty("forward") != null)
+			{
+				this.Response.Headers.Add("X-OpenBrisk-Forward", $"{result.forward}");
 			}
 
 			if (result is string)
