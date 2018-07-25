@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	  <LangVersion>latest</LangVersion>
-	<RunWorkingDirectory>$(MSBuildThisFileDirectory)</RunWorkingDirectory>
+	  <RunWorkingDirectory>$(MSBuildThisFileDirectory)</RunWorkingDirectory>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+	  <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
+	  <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\OpenBrisk.Runtime.Core\OpenBrisk.Runtime.Core.csproj" />
-  </ItemGroup>
 </Project>
