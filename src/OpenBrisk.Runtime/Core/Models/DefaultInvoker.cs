@@ -15,9 +15,8 @@
 		public async Task<object> Execute(IFunction function, object context = null)
 		{
 			object result = this.ExecuteFunction(function, context);
-			if (result is Task)
+			if (result is Task task)
 			{
-				Task task = result as Task;
 				return await task.TimeoutAfter(TimeSpan.FromSeconds(10)); // TODO: Read timout from environment.
 			}
 			else

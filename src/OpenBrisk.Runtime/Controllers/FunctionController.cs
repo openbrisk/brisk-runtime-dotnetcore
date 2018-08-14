@@ -1,14 +1,11 @@
 
 namespace OpenBrisk.Runtime.Controllers
 {
-    using System;
-    using System.IO;
-	using System.Reflection;
+	using System.IO;
 	using System.Text;
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using Newtonsoft.Json;
+	using Newtonsoft.Json;
 	using OpenBrisk.Runtime.Core.Interfaces;
 	using OpenBrisk.Runtime.Core.Models;
 
@@ -38,9 +35,8 @@ namespace OpenBrisk.Runtime.Controllers
 					Data = serializer.Deserialize(reader),
 				};
 
-				// TODO: Check for 408 when timeout
+				// TODO: Check for timeout
 				object result = await this.invoker.Execute(this.function, context);
-
 				return this.GetSuitableActionResult(result);
 			}
 		}
@@ -54,7 +50,7 @@ namespace OpenBrisk.Runtime.Controllers
 				Data = new { }
 			};
 
-			// TODO: Check for 408 when timeout
+			// TODO: Check for timeout
 			object result = await this.invoker.Execute(this.function, context);
 			return this.GetSuitableActionResult(result);
 		}

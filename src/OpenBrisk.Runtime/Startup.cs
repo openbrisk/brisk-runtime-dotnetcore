@@ -12,7 +12,7 @@
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+	        this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -22,13 +22,12 @@
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-	        // Compile the function.
-	        //string requirementsPath = this.Configuration["Compiler:RequirementsPath"];
+	        // Build the function instance.
 	        IFunction function = FunctionFactory.BuildFunction(this.Configuration);
 
 	        services.AddSingleton<IFunction>(function);
-	        services.AddSingleton<IFunctionSettings>(serviceProvider => serviceProvider.GetService<IFunction>().FunctionSettings);
-	        services.AddSingleton<IInvoker>(new DefaultInvoker());
+	        services.AddSingleton<IFunctionSettings>(serviceProvider => serviceProvider.GetRequiredService<IFunction>().FunctionSettings);
+	        services.AddSingleton<IInvoker, DefaultInvoker>();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,12 +37,7 @@
             {
                 app.UseDeveloperExceptionPage();
             }
-            //else
-            //{
-            //    app.UseHsts();
-            //}
 
-            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
